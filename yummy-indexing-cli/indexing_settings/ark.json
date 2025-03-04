@@ -1,0 +1,317 @@
+{
+    "settings" : {
+        "index" : {
+          "number_of_shards": 5,
+          "number_of_replicas": 1,
+          "max_result_window": 500000,
+          "max_ngram_diff": "50",
+          "max_shingle_diff": "50"
+        },
+        "max_ngram_diff" : "50",
+        "analysis": {
+            "analyzer": {
+                "token_search_anzlyer" : {
+                    "tokenizer" : "whitespace",
+                    "filter" : [
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+                "ngram_analyzer": {
+                  "type": "custom",
+                  "tokenizer": "keyword",
+                  "filter": [
+                    "lowercase",
+                    "trim",
+                    "edge_ngram_filter_front"
+                  ]
+                },
+                "autocomplate_search_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "keyword",
+                    "filter" : [
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+                "chosung_index_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "keyword",
+                    "filter": [
+                        "javacafe_chosung_filter",
+                        "lowercase",
+                        "trim",
+                        "edge_ngram_filter_chosung"
+                    ]
+                },
+                "chosung_search_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "keyword",
+                    "filter": [
+                        "javacafe_chosung_filter",
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+                "jamo_index_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "keyword",
+                    "filter" : [
+                        "javacafe_jamo_filter",
+                        "lowercase",
+                        "trim",
+                        "edge_ngram_filter_front"
+                    ]
+                },
+                "jamo_search_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "keyword",
+                    "filter" : [
+                        "javacafe_jamo_filter",
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+                "eng2kor_index_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "keyword",
+                    "filter" : [
+                        "javacafe_eng2kor_filter",
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+                "eng2kor_search_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "keyword",
+                    "filter" : [
+                        "javacafe_eng2kor_filter",
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+                "eng2kor_fix_analyzer" : {
+                    "type" : "custom",
+                    "tokenizer" : "keyword",
+                    "filter" : [
+                        "javacafe_eng2kor_filter_fix",
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+                "kor2eng_index_analyzer": {
+                    "type" : "custom",
+                    "tokenizer" : "keyword",
+                    "filter" : [
+                        "javacafe_kor2eng_filter",
+                        "lowercase",
+                        "trim",
+                        "edge_ngram_filter_front"
+                    ]
+                },
+                "kor2eng_fix_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "whitespace",
+                    "filter": [
+                        "javacafe_kor2eng_filter_fix",
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+                "edge_ngram_analyzer_back": {
+                  "type": "custom",
+                  "tokenizer": "edge_ngram_tokenizer",
+                  "filter": [
+                    "lowercase",
+                    "trim",
+                    "edge_ngram_filter_back"
+                  ]
+                },
+                "suggest_analyzer": {
+                    "type": "custom",
+                    "tokenizer" : "keyword",
+                    "filter" : [
+                        "javacafe_jamo_filter",
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+                "edge_ngram_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "edge_ngram_tokenizer",
+                    "filter": [
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+                "edge_ngram_analyzer_exact": {
+                    "type": "custom",
+                    "tokenizer": "keyword",
+                    "filter": [
+                        "lowercase",
+                        "trim"                  
+                    ]
+                }
+            },
+            "filter": {
+                "edge_ngram_filter_chosung" : {
+                    "type" : "edgeNGram",
+                    "min_gram" : "1",
+                    "max_gram" : "50",
+                    "side" : "front"
+                },
+                "edge_ngram_filter_front" : {
+                    "type" : "edgeNGram",
+                    "min_gram" : "2",
+                    "max_gram" : "50",
+                    "side" : "front"
+                },
+                "javacafe_chosung_filter": {
+                    "type" : "javacafe_chosung"
+                },
+                "javacafe_jamo_filter": {
+                    "type" : "javacafe_jamo"
+                },
+                "javacafe_eng2kor_filter": {
+                    "type" : "javacafe_eng2kor"
+                },
+                "javacafe_eng2kor_filter_fix": {
+                    "type" : "javacafe_eng2kor",
+                    "min_gram": "50",
+                    "max_gram": "50",
+                    "side": "front"
+                },
+                "javacafe_kor2eng_filter": {
+                    "type" : "javacafe_kor2eng"
+                },
+                "javacafe_kor2eng_filter_fix": {
+                    "type" : "javacafe_kor2eng",
+                    "min_gram": "50",
+                    "max_gram": "50",
+                    "side": "front"
+                },
+                "edge_ngram_filter_back": {
+                    "type": "edgeNGram",
+                    "min_gram": "1",
+                    "max_gram": "50",
+                    "side": "back"
+                }
+            },
+            "tokenizer": {
+                "ngram_tokenizer": {
+                    "type": "nGram",
+                    "min_gram": "2",
+                    "max_gram": "50",
+                    "token_chars": [
+                        "letter",
+                        "digit",
+                        "punctuation",
+                        "symbol"
+                    ]
+                },
+                    "edge_ngram_tokenizer" : {
+                    "type" : "edgeNGram",
+                    "min_gram" : "1",
+                    "max_gram" : "50",
+                    "token_chars" : [
+                        "letter",
+                        "digit",
+                        "whitespace",
+                        "punctuation",
+                        "symbol"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "properties": {
+            "idx": {
+                "type": "keyword"   
+            },
+            "autokeyword": {
+                "type": "text",
+                "fields": {
+                    "exact": {
+                        "type": "keyword",
+                        "norms": false
+                    }
+                },
+                "analyzer": "edge_ngram_analyzer",
+                "search_analyzer": "edge_ngram_analyzer",
+                "norms" : false,
+                "index_options": "docs"
+            },
+            "autokeyword_search": {
+                "type": "text",
+                "fields": {
+                    "engfix": {
+                        "type": "text",
+                        "norms": false,
+                        "analyzer" : "kor2eng_fix_analyzer",
+                        "search_analyzer" : "eng2kor_fix_analyzer",
+                        "index_options": "docs"
+                    },
+                    "korfix": {
+                        "type": "text",
+                        "norms": false,
+                        "analyzer" : "eng2kor_fix_analyzer",
+                        "search_analyzer" : "kor2eng_fix_analyzer",
+                        "index_options": "docs"
+                    },
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                },
+                "analyzer" : "kor2eng_index_analyzer",
+                "search_analyzer" : "eng2kor_search_analyzer",
+                "norms" : false,
+                "index_options": "docs"
+            },
+            "autokeyword_chosung": {
+                "type": "text",
+                "analyzer" : "chosung_index_analyzer",
+                "search_analyzer" : "chosung_search_analyzer",
+                "norms" : false,
+                "index_options": "docs"
+            },
+            "weightvalue": {
+                "type": "integer"
+            },
+            "rankyn": {
+                "type": "keyword"
+            },
+            "adidcnt": {
+                "type": "integer"
+            },  
+            "autokeyword_jamo": {
+                "type": "text",
+                "analyzer" : "jamo_index_analyzer",
+                "search_analyzer" : "jamo_search_analyzer",
+                "norms" : false,
+                "index_options": "docs"
+            },
+            "autokeyword_back": {
+                "type": "text",
+                "analyzer" : "edge_ngram_analyzer_back",
+                "search_analyzer" : "ngram_analyzer",
+                "norms" : false,
+                "index_options": "docs"
+            },
+            "autokeyword_suggest": {
+                "type": "completion",
+                "analyzer" : "suggest_analyzer",
+                "search_analyzer" : "jamo_search_analyzer"
+            },
+            "regdt": {
+                "type": "keyword"
+            },
+            "categoryname": {
+                "type": "keyword"
+            },
+            "categoryicon": {
+                "type": "keyword"
+            }
+        }
+    }
+}
