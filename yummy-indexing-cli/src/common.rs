@@ -1,10 +1,10 @@
 pub use std::{
-    collections::{HashMap, VecDeque},
+    collections::{HashMap, HashSet, VecDeque},
     env,
     fmt::Debug,
     fs::File,
     future::Future,
-    io::{BufReader, Write, self},
+    io::{self, BufReader, Write},
     ops::Deref, //time::Duration,
     str::FromStr,
     sync::Arc,
@@ -19,15 +19,11 @@ pub use tokio::{
     time::{Duration, Interval},
 };
 
-
 pub use log::{error, info, warn};
 
 pub use flexi_logger::{Age, Cleanup, Criterion, FileSpec, Logger, Naming, Record};
 
-pub use chrono::{
-    DateTime, Datelike, FixedOffset, NaiveDate, NaiveDateTime, NaiveTime, TimeZone, Utc,
-};
-pub use chrono_tz::Asia::Seoul;
+pub use chrono::{DateTime, FixedOffset, NaiveDateTime, TimeZone, Utc};
 
 pub use serde::{Deserialize, Serialize};
 
@@ -57,9 +53,7 @@ pub use elasticsearch::{
 pub use anyhow::{anyhow, Result};
 
 pub use derive_new::new;
-pub use getset::Getters;
-
-pub use num_format::{Locale, ToFormattedString};
+pub use getset::{Getters, Setters};
 
 // pub use rdkafka:: {
 //     config::ClientConfig,
@@ -72,12 +66,10 @@ pub use num_format::{Locale, ToFormattedString};
 //     producer::{Producer, Record as KafkaRecord, RequiredAcks}
 // };
 
-pub use kafka::producer::{Producer, Record as KafkaRecord, RequiredAcks};
-
 pub use sea_orm::{
     prelude::{Decimal, Expr},
-    ActiveModelBehavior, ColumnTrait, Condition, Database, DatabaseConnection, EntityTrait, FromQueryResult, JoinType, QueryFilter,
-    QueryOrder, QuerySelect, RelationTrait, Select,
+    ActiveModelBehavior, ColumnTrait, Condition, Database, DatabaseConnection, EntityTrait,
+    FromQueryResult, JoinType, QueryFilter, QueryOrder, QuerySelect, RelationTrait, Select,
 };
 
 // pub use diesel::{
@@ -95,7 +87,4 @@ pub use async_trait::async_trait;
 //pub static ELASTICSEARCH_CLIENT: OnceCell<Arc<EsRepositoryPub>> = OnceCell::new();
 //pub static KAFKA_PRODUCER: OnceCell<Arc<KafkaRepositoryPub>> = OnceCell::const_new();
 
-pub use regex::Regex;
-
 pub use once_cell::sync::Lazy as once_lazy;
-

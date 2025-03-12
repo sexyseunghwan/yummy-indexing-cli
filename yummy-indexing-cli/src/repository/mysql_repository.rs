@@ -16,10 +16,3 @@ pub async fn establish_connection() -> &'static DatabaseConnection {
         })
         .await
 }
-
-#[doc = "SQL 커넥션 POOL을 가져와주는 함수"]
-pub fn get_db_pool() -> &'static DatabaseConnection {
-    SQL_DB_POOL
-        .get()
-        .expect("Database connection has not been initialized. Call establish_connection() first.")
-}

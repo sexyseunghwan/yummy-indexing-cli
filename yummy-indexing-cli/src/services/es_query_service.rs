@@ -12,13 +12,13 @@ pub trait EsQueryService {
     async fn post_indexing_data_by_bulk_static<T: Serialize + Send + Sync + Debug>(
         &self,
         index_schedule: &IndexSchedules,
-        data: &Vec<T>,
+        data: &[T],
     ) -> Result<(), anyhow::Error>;
 
     async fn post_indexing_data_by_bulk_dynamic<T: Serialize + Send + Sync + Debug>(
         &self,
         index_schedule: &IndexSchedules,
-        data: &Vec<T>,
+        data: &[T],
     ) -> Result<(), anyhow::Error>;
 
     async fn get_recent_index_datetime(
@@ -30,14 +30,14 @@ pub trait EsQueryService {
     async fn update_index<T: Serialize + Send + Sync + Debug>(
         &self,
         index_schedule: &IndexSchedules,
-        data: &Vec<T>,
+        data: &[T],
         unique_field_name: &str,
     ) -> Result<(), anyhow::Error>;
 
     async fn delete_index<T: Serialize + Send + Sync + Debug>(
         &self,
         index_schedule: &IndexSchedules,
-        data: &Vec<T>,
+        data: &[T],
         unique_field_name: &str,
     ) -> Result<(), anyhow::Error>;
 
@@ -59,7 +59,7 @@ impl EsQueryService for EsQueryServicePub {
     async fn post_indexing_data_by_bulk_static<T: Serialize + Send + Sync + Debug>(
         &self,
         index_schedule: &IndexSchedules,
-        data: &Vec<T>,
+        data: &[T],
     ) -> Result<(), anyhow::Error> {
         /* === information of  index_schedule === */
         let index_alias_name: &String = index_schedule.index_name();
@@ -91,7 +91,7 @@ impl EsQueryService for EsQueryServicePub {
         };
 
         es_conn.create_index(&new_index_name, &json_body).await?;
-        
+
         /* Bulk post the data to the index above at once. */
         es_conn
             .bulk_indexing_query(&new_index_name, data, es_batch_size)
@@ -105,7 +105,6 @@ impl EsQueryService for EsQueryServicePub {
                 false
             }
         };
-
 
         if index_exists_yn {
             /* 기존 인덱스가 존재하는 경우 */
@@ -148,9 +147,8 @@ impl EsQueryService for EsQueryServicePub {
     /// * Result<(), anyhow::Error>
     async fn post_indexing_data_by_bulk_dynamic<T: Serialize + Send + Sync + Debug>(
         &self,
-        //index_alias_name: &str,
         index_schedule: &IndexSchedules,
-        data: &Vec<T>,
+        data: &[T],
     ) -> Result<(), anyhow::Error> {
         let index_alias_name: &String = index_schedule.index_name();
         let es_batch_size: usize = *index_schedule.es_batch_size();
@@ -212,7 +210,7 @@ impl EsQueryService for EsQueryServicePub {
     async fn update_index<T: Serialize + Send + Sync + Debug>(
         &self,
         index_schedule: &IndexSchedules,
-        data: &Vec<T>,
+        data: &[T],
         unique_field_name: &str,
     ) -> Result<(), anyhow::Error> {
         let index_name: &String = index_schedule.index_name();
@@ -250,7 +248,7 @@ impl EsQueryService for EsQueryServicePub {
     async fn delete_index<T: Serialize + Send + Sync + Debug>(
         &self,
         index_schedule: &IndexSchedules,
-        data: &Vec<T>,
+        data: &[T],
         unique_field_name: &str,
     ) -> Result<(), anyhow::Error> {
         let index_name: &String = index_schedule.index_name();
@@ -264,6 +262,8 @@ impl EsQueryService for EsQueryServicePub {
                 .as_i64()
                 .ok_or_else(|| anyhow!("[Error][delete_index()] There was a problem converting data for 'unique_value'"))?
                 .try_into()?;
+
+            println!("unique_value: {}", unique_value);
 
             /* 기존 문서 삭제 */
             es_conn

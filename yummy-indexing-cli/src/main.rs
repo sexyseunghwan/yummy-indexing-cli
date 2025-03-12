@@ -5,6 +5,8 @@ Description :
 
 History     : 2025-02-20 Seunghwan Shin       # [v.1.0.0] first create
               2025-03-03 Seunghwan Shin       # [v.2.0.0] CLI 를 통해서 사용자가 직접 색인하는 기능 추가
+              2025-03-12 Seunghwan Shin       # [v.2.1.0] 1) 증분색인 알고리즘 변경
+                                                          2) 음식점 분류타입 색인에 추가
 */
 
 mod common;
@@ -59,10 +61,10 @@ async fn main() {
                 panic!("{:?}", e);
             }
         };
-    
+
     if compile_type == "schedule" {
         /*
-            [스케쥴 타입의 색인 프로그램] 
+            [스케쥴 타입의 색인 프로그램]
             각 인덱스 별로 모니터링을 비동기적으로 실시해준다.
             스케쥴링 대기 작업 진행
         */
@@ -71,21 +73,20 @@ async fn main() {
 
             let controller_arc_clone: Arc<MainController<QueryServicePub, EsQueryServicePub>> =
                 Arc::clone(&controller_arc);
-            
+
             tokio::spawn(async move {
                 if let Err(e) = controller_arc_clone.main_schedule_task(index_clone).await {
                     error!("[Error][main_schedule_task] {:?}", e);
                 }
             });
         }
-    
+
         /* 모두 서브테스크로 실행되므로 아래와 같이 메인 태스크를 계속 유지시켜줘야 한다. */
         tokio::select! {
             _ = signal::ctrl_c() => {
                 info!("Received Ctrl+C, shutting down...");
             }
         }
-
     } else if compile_type == "cli" {
         /* [사용자 입력을 받아서 색인을 처리하는 프로그램] */
         match controller_arc.cli_indexing_task(index_schdules).await {
@@ -95,7 +96,6 @@ async fn main() {
                 panic!("[Error][main()] {:?}", e);
             }
         }
-
     } else {
         error!("[Error][main()] The 'COMPILE_TYPE' information must be 'schedule' or 'cli'.");
         panic!("[Error][main()] The 'COMPILE_TYPE' information must be 'schedule' or 'cli'.");
